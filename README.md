@@ -1,32 +1,76 @@
 # IAES
 IAES Research Data and Code Repository
 
-This repository contains data and R code used in the study titled "Prospects and Complexities of Global Bioenergy Deployment Using Agroforestry Residues for Advancing Sustainable Development". The Integrated AFRs to Energy System (IAES) framework was applied to analyze the sustainability impacts of agroforestry residues (AFRs) across various scenarios, focusing on contributions to Sustainable Development Goals (SDGs) at global and regional levels.
+This repository contains all R code used in the study titled "Prospects and Complexities of global bioenergy deployment by agricultural and forestry residues in advancing sustainable development". The Integrated AFRs to Energy System (IAES) framework was applied to analyze the sustainability impacts of agricultural and forestry residues (AFRs) across various scenarios, focusing on contributions to Sustainable Development Goals (SDGs) at global and regional levels.
 
 Repository Structure
 
-1. IAES_SDG_Quantify
+1. AFRs_Calculation.R
+Purpose: This script calculates the quantities of agricultural and forestry residues (AFRs), with a focus on Crop Residues (CRs). It computes region-specific Residue-to-Product Ratios (RPRs) for crops like maize, rice, beans, and wheat using FAO data and exponential functions. These RPRs are combined with GCAM crop yield data to estimate residue production and energy potential (in megatonnes and exajoules) across multiple regions and years (2019–2023). The script outputs regional and global summaries of residue mass and energy content.
 
-This directory includes the R scripts used for the quantitative analysis of the IAES framework. The code here runs the core calculations of the study, evaluating the potential impacts of AFR deployment on SDGs.
+2. Technology_Evolution_Model.R
+Purpose: This script models the evolution of biomass-related technologies (e.g., combined heat and power, biofuels) over time, likely forecasting improvements in efficiency, emissions, or costs under scenarios like SSP126 and SSP245. It analyzes technological advancements for agricultural and forestry residues (AFRs), integrating with life cycle assessment (LCA) data to project performance metrics, supporting long-term sustainability and energy planning.
 
-2. results_Visualization
+3. Environmental_Impact_Monetization.R
+Purpose: This script monetizes environmental impacts of agricultural and forestry residue (AFR) technologies compared to fossil energy systems, using the ReCiPe2016 Endpoint method. It calculates net impacts across scenarios (SSP126, SSP245, SSP445HUMI, SSP445LUMI, SSP585) for 2025–2060, converting human health (DALY) and ecosystem impacts into monetary values. Monte Carlo simulations incorporate uncertainty, producing deterministic and stochastic results saved as CSV files.
 
-This directory contains R scripts designed for visualizing the research results. These scripts produce the graphical outputs, including figures and charts, representing IAES impacts on sustainability metrics across different scenarios and regions.
+4. Biomass_Allocation_Genetic_Algorithm.R
+Purpose: This script uses a genetic algorithm to optimize the allocation of agricultural and forestry residues (AFRs) across technologies (e.g., CHP, biofuels) and regions under various scenarios.  The output provides optimal biomass distribution strategies to enhance sustainability and energy efficiency.
 
-3. data
-
-The data directory (in compressed format) includes all the datasets used in this study. This collection encompasses input parameters, scenario-based data, and results data used for modeling and visualization. The datasets here are integral for reproducing the quantitative results presented in the study.
+5. SDG_Score_Calculation.R
+Purpose: This script evaluates the sustainability performance of AFR technologies by calculating scores for Sustainable Development Goals (SDGs), such as SDG 7 (Affordable and Clean Energy) and SDG 13 (Climate Action). It uses LCA outputs, biomass data and socioeconomic data to quantify contributions to SDG indicators across scenarios, producing scores per technology, region, or scenario to assess alignment with global sustainability goals.
 
 Usage
 
-Run Quantitative Analysis: Start with the IAES_SDG_Quantify scripts to reproduce the core calculations of the IAES framework.
-Generate Visualizations: Use the results_Visualization scripts to recreate the visual representations of the study’s findings.
-Data Access: The data folder provides all necessary input data. Unzip the folder and ensure the correct file paths in the R scripts for seamless data access.
+This repository contains five R scripts. The scripts are designed to be run in R version 4.2.2. Below are the steps to set up the environment, prepare input data, and execute the scripts in sequence.
 
-Notes
+Prerequisites
 
-Ensure that all dependencies and packages required by the R scripts are installed.
+R Version: Ensure R version 4.2.2 is installed. Download from CRAN if needed.
+R Packages: Install the required R packages by running the following command in R.
 
-This data and code repository is intended for research and replication purposes, following the guidelines in the accompanying research paper.
+Running the Scripts
+The scripts should be executed in the following order, as later scripts may depend on outputs or data generated by earlier ones. Ensure all input files are correctly formatted and accessible before running each script.
 
-For more details about the methodology and analysis, please refer to the published study. If you encounter any issues or have questions, feel free to contact us.
+1. AFRs_Calculation.R
+Execution: Run in R 4.2.2 with the command.
+Inputs: RPRrawdataFAO.csv, sspX_agprod.xlsx in data/.
+Outputs: RPRdata.csv, CR_region.csv, CR_global.csv in outputs/.
+Notes: This script provides foundational residue data, which may be used by subsequent scripts.
+
+2. Technology_Evolution_Model.R
+Purpose: Models the evolution of AFR-related technologies (e.g., CHP, biofuels) over time, forecasting improvements in efficiency or emissions.
+Execution: Run after AFRs_Calculation.R 
+Inputs: Likely uses outputs from AFRs_Calculation.R (e.g., CR_region.csv) and technology-specific data (ensure paths are updated).
+Outputs: Technology evolution projections (e.g., CSV files with efficiency or emission trends) in outputs/.
+Notes: Verify input dependencies and adjust file paths as needed.
+
+3.Environmental_Impact_Monetization.R
+Purpose: Monetizes environmental impacts of AFR technologies compared to fossil energy using the ReCiPe2016 Endpoint method, with Monte Carlo uncertainty analysis.
+Execution: Run after AFRs_Calculation.R and Technology_Evolution_Model.R
+Inputs: LCA_AFR_Environment_sspXXX.csv, LCA_AFR_Environment_Fossilenergy_sspXXX.csv, impact_factors_endpoint.csv, normalization_factors_endpoint.csv in data/.
+Outputs: Scenario-specific CSV files (e.g., eco_LCA_NET_EI_world_endpoint_ssp126.csv) and combined results (ecores_alltype.csv) in outputs/.
+Notes: Ensure scenario-specific input files (e.g., SSP126, SSP245) are available.
+
+4. Biomass_Allocation_Genetic_Algorithm.R
+Purpose: Optimizes AFR allocation across technologies and regions using a genetic algorithm to minimize environmental impacts or costs.
+Execution: Run after Environmental_Impact_Monetization.R
+Inputs: Likely uses outputs from AFRs_Calculation.R and Environmental_Impact_Monetization.R (e.g., ecores_alltype.csv).
+Outputs: Optimized allocation plans (e.g., CSV files with biomass distribution) in outputs/.
+Notes: Check for specific input requirements (e.g., cost or impact data) and update paths.
+
+5. SDG_Score_Calculation.R
+Purpose: Calculates Sustainable Development Goal (SDG) scores for AFR technologies, evaluating contributions to goals like SDG 7 (Clean Energy) and SDG 13 (Climate Action).
+Execution: Run last, as it may depend on outputs from previous scripts.
+Inputs: Likely uses outputs from Environmental_Impact_Monetization.R or Biomass_Allocation_Genetic_Algorithm.R (e.g., monetized impacts or allocation data).
+Outputs: SDG score tables (e.g., CSV files with scores per technology/scenario) in outputs/.
+Notes: Confirm input dependencies and SDG indicator definitions before running.
+
+Additional Notes
+Input Data Availability: All input data files required for these scripts are provided in the study's Supplementary Data, accessible via the associated publication or repository.
+File Paths: Replace placeholder paths (e.g., /---/) in each script with the absolute or relative paths to your data/ and outputs/ directories.
+Dependencies: Some scripts may require outputs from others (e.g., CR_region.csv from AFRs_Calculation.R as input for Biomass_Allocation_Genetic_Algorithm.R). Verify these dependencies before execution.
+Reproducibility: Set the working directory in R to the repository root using setwd() or ensure relative paths are correct.
+Error Handling: Check for missing or incorrectly formatted input files to avoid runtime errors. Use tryCatch() if custom error handling is implemented in the scripts.
+System Requirements: A standard desktop environment with at least 8GB RAM is recommended due to potential memory demands of Monte Carlo simulations in Environmental_Impact_Monetization.R.
+For issues or questions, refer to the repository’s Issues section or contact the repository maintainer. For more details about the methodology and analysis, please refer to the published study. If you encounter any issues or have questions, feel free to contact us.
