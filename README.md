@@ -93,7 +93,7 @@ Notes: Confirm input dependencies and SDG indicator definitions before running.
 
 Additional Notes
 
-Input Data Availability: All input data files required for these scripts are provided in the study's Supplementary Data, accessible via the associated publication or repository.
+Input Data Availability: All input data files required for these scripts are provided in this main.
 
 File Paths: Replace placeholder paths (e.g., /---/) in each script with the absolute or relative paths to your data/ and outputs/ directories.
 
